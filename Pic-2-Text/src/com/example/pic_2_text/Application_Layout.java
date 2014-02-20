@@ -68,23 +68,7 @@ public class Application_Layout extends Activity {
 	 */
 	private SystemUiHider mSystemUiHider;
 	
-	/*private void saveFullImage() {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File file = new File(Environment.getExternalStorageDirectory(), "test.jpg");
-		Uri outputFileUri = Uri.fromFile(file);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-		startActivityForResult(intent, TAKE_PICTURE);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-	  if ((requestCode == TAKE_PICTURE) && (resultCode == Activity.RESULT_OK)) {
-	    saveFullImage();
-	    if (data == null) {    
-	      
-	    }
-	  }
-	};*/
+	
 	
 
 
@@ -171,9 +155,9 @@ public class Application_Layout extends Activity {
             	//toast.show();
             	//Camera.open();
             	//Camera.Parameters.
-              	Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-               	startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-            
+              	//Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+               	//startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+            	saveFullImage();
             	
             	
             	
@@ -185,15 +169,32 @@ public class Application_Layout extends Activity {
 
 	}
 
+	
+	private void saveFullImage() {
+	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+	File file = new File(Environment.getExternalStorageDirectory(), "test.jpg");
+	Uri outputFileUri = Uri.fromFile(file);
+	intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+	startActivityForResult(intent, CAMERA_PIC_REQUEST);
+}
 
 	
+
+	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	    if (requestCode == CAMERA_PIC_REQUEST) {
+	    	if ((requestCode == CAMERA_PIC_REQUEST) && (resultCode == Activity.RESULT_OK)) {
+	    		
+	    	}
+	    	if (data == null) {
+	    		
+	    	}
 	    	//Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
         	//ImageView image = (ImageView) findViewById(R.id.photoResultView);
         	//image.setImageBitmap(thumbnail);
 	    }
 	}
+	
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
