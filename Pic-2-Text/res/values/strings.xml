@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Pic-2-Text</string>
+    <string name="dummy_button">Capture Image</string>
+    <string name="dummy_content">Pic-2-Text</string>
+    <string name="gallery_option">Gallery</string>
+    <string name="picure_preview">Picture Preview</string>
+
+</resources>
