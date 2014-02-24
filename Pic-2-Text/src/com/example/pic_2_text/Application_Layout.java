@@ -11,6 +11,7 @@ import com.example.pic_2_text.util.SystemUiHider;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Application;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
@@ -44,10 +45,15 @@ public class Application_Layout extends Activity {
 	
 	 private Camera mCamera;
 	 public final int cameraId = 0;
+	 private Bitmap photoBitmap;
+	 private ImageView photoDisplay;
+	 private Button cameraButton;
+	 private Button galleryButton;
+	 
 	 public Activity activity = null;
 	 
-	 static final int REQUEST_IMAGE_CAPTURE = 0;
-	 static final int REQUEST_GALLERY = 1;
+	 public static final int PHOTORESULT = 1;
+	 static final int REQUEST_GALLERY = 2;
 
 	 
 	private static final boolean AUTO_HIDE = true;
@@ -69,36 +75,11 @@ public class Application_Layout extends Activity {
 	 */
 	private static final int HIDER_FLAGS = SystemUiHider.FLAG_HIDE_NAVIGATION;
 
-	private static final int photoResultView = 0;
-	
-	private static final int CAMERA_PIC_REQUEST = 1337;
-
 	/**
 	 * The instance of the {@link SystemUiHider} for this activity.
 	 */
 	private SystemUiHider mSystemUiHider;
 	
-	
-	
-	/*
-	  @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-        activity = this; 
-
-        // Create an instance of Camera
-        mCamera = getCameraInstance();
-
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-    }
-	 * */
-	
-
 	
 	
 	@Override
@@ -107,10 +88,15 @@ public class Application_Layout extends Activity {
 
 		setContentView(R.layout.activity_application__layout);
 
-		activity = this;
 		
 		final View controlsView = findViewById(R.id.fullscreen_content_controls);
-		final View contentView = findViewById(R.id.fullscreen_content);
+		final View contentView = findViewById(R.id.fullscreen_content);		
+
+		cameraButton = (Button) findViewById(R.id.camera_button);
+		galleryButton = (Button) findViewById(R.id.gallery_button);
+		
+		photoDisplay = (ImageView) findViewById(R.id.photo_bitmap);
+		
 
 		//mCamera = getCameraInstance();
 		
@@ -178,17 +164,15 @@ public class Application_Layout extends Activity {
 		// operations to prevent the jarring behavior of controls going away
 		// while interacting with the UI.
 		//findViewById(R.id.button1).setOnTouchListener(mDelayHideTouchListener);
-		final Button button1 = (Button) findViewById(R.id.button1);
-		final Button gallery_option = (Button) findViewById(R.id.gallery_option);
 
-		gallery_option.setOnClickListener(new View.OnClickListener() {
+		galleryButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View x) {
 				Intent galleryIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 				startActivityForResult(galleryIntent, REQUEST_GALLERY);
 			}
 		});
 		
-		button1.setOnClickListener(new View.OnClickListener() {
+		cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	//Context context = getApplicationContext();
             	//CharSequence text = "Hello toast!";
@@ -200,81 +184,22 @@ public class Application_Layout extends Activity {
               	//Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                	//startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
 
-            	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            	File file = new File(Environment.getExternalStorageDirectory(), "test.jpg");
-            	Uri outputFileUri = Uri.fromFile(file);
-            	intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-
-            	startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+            	Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            	startActivityForResult(cameraIntent, PHOTORESULT);
               	}
         });
 	
 
 	}
-	
-
-	
-	
-	//InputStream is = getContentResolver().
-	//Bitmap bitmap = BitmapFactory.decodeStream(is);
-	//is.close();
-	//setOneShotPreviewCallback(Camera.PreviewCallback());
-
-	
-	
-	
-/*	String mCurrentPhotoPath;
- * 
- * InputStream is = getContentResolver().openInputStream(uri);
-	Bitmap bitmap = BitmapFactory.decodeStream(is);
-	is.close();
-
-	@SuppressLint("SimpleDateFormat")
-	private File createImageFile() throws IOException {
-	    // Create an image file name
-	    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new GregorianCalendar());
-	    String imageFileName = "JPEG_" + timeStamp + "_";
-	    File storageDir = Environment.getExternalStoragePublicDirectory(
-	            Environment.DIRECTORY_PICTURES);
-	    File image = File.createTempFile(imageFileName,".jpg", storageDir);
-
-	    // Save a file: path for use with ACTION_VIEW intents
-	    mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-	    return image;
-	}
-*/
-	ImageView imageView1;
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		
-	    if (requestCode == REQUEST_IMAGE_CAPTURE) {
-	    	if ((requestCode == REQUEST_IMAGE_CAPTURE) && (resultCode == Activity.RESULT_OK)) {
-	    		
-	    	}
-	    	if(requestCode == REQUEST_GALLERY && resultCode == RESULT_OK && null != data) {
-	    		Uri selectedImage = data.getData();
-	            String[] filePathColumn = { MediaStore.Images.Media.DATA };
-	    
-	            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-	            cursor.moveToFirst();
-	    
-	            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-	            String picturePath = cursor.getString(columnIndex);
-	            cursor.close();
-	            
-	            ImageView imageView = (ImageView) findViewById(R.id.fullscreen_content_controls);
-	            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
-	    	}
-	    
-	    	if (data == null) {
-	    		
-	    	}
-	    	//Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        	//ImageView image = (ImageView) findViewById(R.id.photoResultView);
-        	//image.setImageBitmap(thumbnail);
-	    }
+	    if (requestCode == PHOTORESULT) {	    	  
+	    	photoBitmap = (Bitmap) data.getExtras().get("data");
+	    	photoDisplay.setImageBitmap(photoBitmap);
+	   }
 	}
 
 	
@@ -342,42 +267,3 @@ public class Application_Layout extends Activity {
 
 
 
-/*public class Camera extends Application_Layout
-{
-    private Camera mCamera;
-    private CameraPreview mPreview;
-    public final int cameraId = 0;
-    public Activity activity = null;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-        activity = this; 
-
-        // Create an instance of Camera
-        mCamera = getCameraInstance();
-
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-    }
-
-    public void setCameraDisplayOrientation(Activity activity,
-                        int cameraId, android.hardware.Camera camera) {
-
-    }
-
-    public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
-    private SurfaceHolder mHolder;
-    private Camera mCamera;
-    ...
-    public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
-        ...
-        setCameraDisplayOrientation(activity, cameraId, mCamera);
-        ....
-    }
-    }
-}*/ 
