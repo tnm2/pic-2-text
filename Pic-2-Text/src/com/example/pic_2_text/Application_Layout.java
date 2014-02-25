@@ -50,9 +50,12 @@ public class Application_Layout extends Activity {
 	 private Button cameraButton;
 	 private Button galleryButton;
 	 
+	 private int mThemeId = -1;
+	 
+	 Preview_Layout mPreview;
+	 
 	 public Activity activity = null;
 	 
-	 public static final int PHOTORESULT = 1;
 	 static final int REQUEST_GALLERY = 2;
 
 	 
@@ -85,7 +88,6 @@ public class Application_Layout extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_application__layout);
 
 		
@@ -95,10 +97,9 @@ public class Application_Layout extends Activity {
 		cameraButton = (Button) findViewById(R.id.camera_button);
 		galleryButton = (Button) findViewById(R.id.gallery_button);
 		
-		photoDisplay = (ImageView) findViewById(R.id.photo_bitmap);
-		
+		photoDisplay = (ImageView) findViewById(R.id.picture_bitmap_display);
 
-		//mCamera = getCameraInstance();
+		
 		
 		// Set up an instance of SystemUiHider to control the system UI for
 		// this activity.
@@ -172,6 +173,8 @@ public class Application_Layout extends Activity {
 			}
 		});
 		
+		
+		
 		cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	//Context context = getApplicationContext();
@@ -183,24 +186,17 @@ public class Application_Layout extends Activity {
             	//Camera.Parameters.
               	//Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                	//startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-
-            	Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            	startActivityForResult(cameraIntent, PHOTORESULT);
+            	
+            	int commandIndex = 1;
+            	distributeCommand(commandIndex);
+            	
               	}
         });
 	
 
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		
-	    if (requestCode == PHOTORESULT) {	    	  
-	    	photoBitmap = (Bitmap) data.getExtras().get("data");
-	    	photoDisplay.setImageBitmap(photoBitmap);
-	   }
-	}
+	
 
 	
 	@Override
@@ -212,25 +208,7 @@ public class Application_Layout extends Activity {
 		// are available.
 		delayedHide(100);
 	}
-
 	
-	/* @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-
-        activity = this; 
-
-        // Create an instance of Camera
-        mCamera = getCameraInstance();
-
-        // Create our Preview view and set it as the content of our activity.
-        mPreview = new CameraPreview(this, mCamera);
-        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
-    }
-	
-	*/
 	/**
 	 * Touch listener to use for in-layout UI controls to delay hiding the
 	 * system UI. This is to prevent the jarring behavior of controls going away
@@ -253,6 +231,19 @@ public class Application_Layout extends Activity {
 			mSystemUiHider.hide();
 		}
 	};
+	
+	public void distributeCommand(int commandRequest) {
+		if(commandRequest == 1) {
+			Intent cameraIntent = new Intent(android.MediaStore.Ac)
+	    	startActivity(new Intent(Application_Layout.this, Preview_Layout.class));	
+		}
+		else if(commandRequest == 2){
+			
+		}
+		else{
+			
+		}
+	}
 	
 	/**
 	 * Schedules a call to hide() in [delay] milliseconds, canceling any
