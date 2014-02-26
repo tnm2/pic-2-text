@@ -1,0 +1,68 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_name_logo"
+    tools:context=".Application_Layout" >
+
+    <!--
+         The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc.
+    -->
+
+    <TextView
+        android:id="@+id/fullscreen_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:keepScreenOn="true" />
+
+    <!--
+         This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows.
+    -->
+
+   <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true" >
+
+        <LinearLayout
+            android:id="@+id/fullscreen_content_controls"
+            style="?buttonBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:background="@color/black_overlay"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent" >
+
+        </LinearLayout>
+        
+       
+
+        <Button
+            android:id="@+id/camera_button"
+            android:layout_width="wrap_content"
+            android:layout_height="123dp"
+            android:text="@string/dummy_button"
+            android:textColorLink="#FF0000" />
+
+        <Button
+            android:id="@+id/gallery_button"
+            android:layout_width="149dp"
+            android:layout_height="137dp"
+            android:layout_gravity="bottom"
+            android:text="@string/gallery_option" />
+
+        <ImageView
+            android:id="@+id/photo_bitmap"
+            android:layout_width="128dp"
+            android:layout_height="132dp"
+            android:layout_gravity="right"
+            android:src="@android:drawable/alert_dark_frame" />
+       
+    </FrameLayout>
+
+</FrameLayout>
