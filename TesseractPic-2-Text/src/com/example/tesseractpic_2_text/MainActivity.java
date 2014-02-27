@@ -29,12 +29,14 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		final View contentView = findViewById(R.id.fullscreen_content);		
-
+		
+		//Sets the camera button and to the id of camera button on activity_main
 		cameraButton = (Button) findViewById(R.id.camera_button);
+		//Sets the gallery button to the id of gallery button on activity_main
 		galleryButton = (Button) findViewById(R.id.gallery_button);
 		
 		
-
+		//Makes the button start to "listen" to read if the Gallery button is pressed
 		galleryButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View x) {
 				
@@ -46,6 +48,7 @@ public class MainActivity extends Activity {
 		});
 		
 
+		//Makes the button start to "listen" to read if the Gallery button is pressed
 		cameraButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {            	
 				Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -54,12 +57,16 @@ public class MainActivity extends Activity {
         });
 	}
 	
-	
+	/*Whenever the result Uri is determined, will direct the program to next 
+	step(More code to be added)*/
 	public void onActivityResult(int requestCode, int resultCode, Intent data){
 		if(requestCode == REQUEST_CAMERA){
 			
 		}
 		else if(requestCode == REQUEST_GALLERY){
+		}
+		else{
+			
 		}
 }
 
