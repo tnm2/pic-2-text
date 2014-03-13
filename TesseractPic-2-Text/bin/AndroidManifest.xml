@@ -22,6 +22,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.example.tesseractpic_2_text.ProcessedTextPreview"
+            android:label="@string/title_activity_processed_text_preview" >
+        </activity>
     </application>
 
 </manifest>
